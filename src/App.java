@@ -3,7 +3,7 @@
 Суть задачи в следующем. Есть класс SQL-фабрики, который представляет собой креатор объектов-запросов (типов INSERT / DELETE / UPDATE / SELECT)
 далее эти объекты предоставляют методы-замыкатели на свой класс, например для инсерта:
 
-InsertQuery iq =
+InsertQueryBuilder iq =
 SQLFactory.createInsertQuery().into("Some_Table")
 .field("F_alpha", "a_value", String.class)
 .field("F_Beta", false, Boolean.class)
@@ -16,8 +16,23 @@ iq.build()
 INSERT INTO SOME_TABLE(F_ALPHA, F_BETA, F_GAMMA, F_DELTA) VALUES ('a_value', false, 10, 0.01)*/
 
 
+import java.math.BigDecimal;
+
 /**
  * Created by пользователь on 23.12.2016.
  */
 public class App {
+
+    public static void main(String[] args) {
+        InsertQueryBuilder builder =
+            new InsertQueryBuilder()
+            .into("Some_Table")
+            .field("F_alpha", "a_value", String.class)
+            .field("F_Beta", false, Boolean.class)
+            .field("F_gamma", BigDecimal.TEN, BigDecimal.class)
+            .field("F_Delta", 0.01, Double.class);
+
+        Query query = builder.build();
+        System.out.println(query.getSql());
+    }
 }

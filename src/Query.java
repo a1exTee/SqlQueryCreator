@@ -1,6 +1,14 @@
 /**
- * Created by пользователь on 23.12.2016.
+ * Created by пользователь on 27.01.2017.
  */
-public abstract class Query {
-    public abstract String build();
+public class Query {
+    private String queryString;
+
+    public Query(String queryString) {
+        this.queryString = queryString;
+    }
+
+    public String getSql() {
+        return queryString;
+    }
 }

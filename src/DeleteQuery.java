@@ -1,10 +1,12 @@
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 /**
  * Created by пользователь on 23.12.2016.
  */
-public class DeleteQuery extends Query {
+public class DeleteQuery extends QueryBuilder {
 
     @Override
-    public String build() {
-
+    public Query build() {
+        throw new NotImplementedException();
     }
 }
