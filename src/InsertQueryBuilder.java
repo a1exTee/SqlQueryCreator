@@ -46,10 +46,20 @@ public class InsertQueryBuilder extends QueryBuilder {
             sb.append(insertions.get(index).fieldName);
         }
         sb.append(") VALUES (");
+        if (insertions.get(0).type.equals(String.class))
+            sb.append("'");
         sb.append(insertions.get(0).value);
+        if (insertions.get(0).type.equals(String.class))
+            sb.append("'");
+
         for (int index = 1; index < insertions.size(); index++) {
             sb.append(", ");
+
+            if (insertions.get(index).type.equals(String.class))
+                sb.append("'");
             sb.append(insertions.get(index).value);
+            if (insertions.get(index).type.equals(String.class))
+                sb.append("'");
         }
         sb.append(")");
 

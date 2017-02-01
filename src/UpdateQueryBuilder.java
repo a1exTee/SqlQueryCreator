@@ -1,5 +1,3 @@
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +5,8 @@ import java.util.List;
 /**
  * Created by пользователь on 23.12.2016.
  */
-public class SelectQueryBuilder extends QueryBuilder {
+public class UpdateQueryBuilder extends QueryBuilder {
+
 
     private class Insertion {
         String fieldName;
@@ -22,25 +21,25 @@ public class SelectQueryBuilder extends QueryBuilder {
     }
 
     private String tableName;
-    private List<SelectQueryBuilder.Insertion> insertions;
+    private List<UpdateQueryBuilder.Insertion> insertions;
 
-    public SelectQueryBuilder() {
-        this.insertions = new ArrayList<SelectQueryBuilder.Insertion>();
+    public UpdateQueryBuilder() {
+        this.insertions = new ArrayList<UpdateQueryBuilder.Insertion>();
     }
 
-    public SelectQueryBuilder into(String tableName) {
+    public UpdateQueryBuilder into(String tableName) {
         this.tableName = tableName;
         return this;
     }
 
-    public SelectQueryBuilder field(String fieldName, Object value, Class type) {
-        insertions.add(new SelectQueryBuilder.Insertion(fieldName, value, type));
+    public UpdateQueryBuilder field(String fieldName, Object value, Class type) {
+        insertions.add(new UpdateQueryBuilder.Insertion(fieldName, value, type));
         return this;
     }
 
     @Override
     public Query build() {
-        sb.append("SELECT FROM ");
+        sb.append("UPDATE ");
         sb.append(tableName);
         sb.append("(");
         sb.append(insertions.get(0).fieldName);

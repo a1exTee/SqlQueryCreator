@@ -24,15 +24,37 @@ import java.math.BigDecimal;
 public class App {
 
     public static void main(String[] args) {
-        InsertQueryBuilder builder =
+        InsertQueryBuilder insertQueryBuilder =
             new InsertQueryBuilder()
-            .into("Some_Table")
-            .field("F_alpha", "a_value", String.class)
-            .field("F_Beta", false, Boolean.class)
-            .field("F_gamma", BigDecimal.TEN, BigDecimal.class)
-            .field("F_Delta", 0.01, Double.class);
+                .into("Some_Table")
+                .field("F_alpha", "a_value", String.class)
+                .field("F_Beta", false, Boolean.class)
+                .field("F_gamma", BigDecimal.TEN, BigDecimal.class)
+                .field("F_Delta", 0.01, Double.class);
 
-        Query query = builder.build();
-        System.out.println(query.getSql());
+        Query insertQuery = insertQueryBuilder.build();
+        System.out.println(insertQuery.getSql());
+
+        DeleteQueryBuilder deleteQueryBuilder =
+            new DeleteQueryBuilder()
+                .from("Some_Table")
+                .whereEqual("F_alpha", "a_value", String.class)
+                .whereEqual("F_Beta", false, Boolean.class)
+                .whereLess("F_gamma", BigDecimal.TEN, BigDecimal.class)
+                .whereGreaterOrEqual("F_Delta", 0.01, Double.class);
+
+        Query deleteQuery = deleteQueryBuilder.build();
+        System.out.println(deleteQuery.getSql());
+
+        UpdateQueryBuilder updateQueryBuilder =
+                new UpdateQueryBuilder()
+                        .into("Some_Table")
+                        .field("F_alpha", "a_value", String.class)
+                        .field("F_Beta", false, Boolean.class)
+                        .field("F_gamma", BigDecimal.TEN, BigDecimal.class)
+                        .field("F_Delta", 0.01, Double.class);
+
+        Query updateQuery = updateQueryBuilder.build();
+        System.out.println(updateQuery.getSql());
     }
 }
