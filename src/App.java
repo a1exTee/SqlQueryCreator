@@ -13,7 +13,8 @@ SQLFactory.createInsertQuery().into("Some_Table")
 iq.build()
 вернёт
 
-INSERT INTO SOME_TABLE(F_ALPHA, F_BETA, F_GAMMA, F_DELTA) VALUES ('a_value', false, 10, 0.01)*/
+INSERT INTO SOME_TABLE(F_ALPHA, F_BETA, F_GAMMA, F_DELTA) VALUES ('a_value', false, 10, 0.01)
+UPDATE SOME_TABLE SET F_ALPHA='a_value', F_BETA=false, F_GAMMA=10, F_DELTA=0.01 WHERE F_ALPHA = 'green_elephant', F_DELTA <= 0.05 AND F_BETA = true*/
 
 
 import java.math.BigDecimal;
@@ -48,13 +49,28 @@ public class App {
 
         UpdateQueryBuilder updateQueryBuilder =
                 new UpdateQueryBuilder()
-                        .into("Some_Table")
-                        .field("F_alpha", "a_value", String.class)
-                        .field("F_Beta", false, Boolean.class)
-                        .field("F_gamma", BigDecimal.TEN, BigDecimal.class)
-                        .field("F_Delta", 0.01, Double.class);
+                        .update("Some_Table")
+                        .set("F_Beta", false, Boolean.class)
+                        .set("F_alpha", "a_value", String.class)
+                        .set("F_gamma", BigDecimal.TEN, BigDecimal.class)
+                        .set("F_Delta", 0.01, Double.class)
+                        .whereEqual("F_alpha", "green_elephant", String.class)
+                        .whereEqual("F_Beta", true, Boolean.class)
+                        .whereLessOrEqual("F_Delta", 0.05, Double.class);
 
         Query updateQuery = updateQueryBuilder.build();
         System.out.println(updateQuery.getSql());
+
+        /*SelectQueryBuilder selectQueryBuilder =
+                new SelectQueryBuilder()
+                        .select("SELECT")
+                        .from("Some_Table")
+                        .whereEqual("F_alpha", "a_value", String.class)
+                        .whereEqual("F_Beta", false, Boolean.class)
+                        .whereEqual("F_gamma", BigDecimal.TEN, BigDecimal.class)
+                        .whereEqual("F_Delta", 0.01, Double.class);
+
+        Query selectQuery = selectQueryBuilder.build();
+        System.out.println(selectQuery.getSql());*/
     }
 }
