@@ -2,14 +2,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sun.corba.se.spi.activation.IIOP_CLEAR_TEXT.value;
-
 /**
  * Created by пользователь on 23.12.2016.
  */
 public class UpdateQueryBuilder extends QueryBuilder {
-
-
     private class Insertion {
         String fieldName;
         Object value;
@@ -22,13 +18,13 @@ public class UpdateQueryBuilder extends QueryBuilder {
         }
     }
 
-    private class Selection {
+    private class Case {
         String fieldName;
         String comparisonSign;
         Object value;
         Type type;
 
-        public Selection(String comparisonSign, String fieldName, Object value, Class type) {
+        public Case(String comparisonSign, String fieldName, Object value, Class type) {
             this.comparisonSign = comparisonSign;
             this.fieldName = fieldName;
             this.value = value;
@@ -38,11 +34,11 @@ public class UpdateQueryBuilder extends QueryBuilder {
 
     private String tableName;
     private List<UpdateQueryBuilder.Insertion> insertions;
-    private List<UpdateQueryBuilder.Selection> selections;
+    private List<Case> cases;
 
     public UpdateQueryBuilder() {
         this.insertions = new ArrayList<UpdateQueryBuilder.Insertion>();
-        this.selections = new ArrayList<UpdateQueryBuilder.Selection>();
+        this.cases = new ArrayList<Case>();
     }
 
     public UpdateQueryBuilder update(String tableName) {
@@ -56,32 +52,32 @@ public class UpdateQueryBuilder extends QueryBuilder {
     }
 
     public UpdateQueryBuilder whereEqual(String fieldName, Object value, Class type) {
-        selections.add(new UpdateQueryBuilder.Selection("=", fieldName, value, type));
+        cases.add(new Case("=", fieldName, value, type));
         return this;
     }
 
     public UpdateQueryBuilder whereNotEqual(String fieldName, Object value, Class type) {
-        selections.add(new UpdateQueryBuilder.Selection("<>", fieldName, value, type));
+        cases.add(new Case("<>", fieldName, value, type));
         return this;
     }
 
     public UpdateQueryBuilder whereLess(String fieldName, Object value, Class type) {
-        selections.add(new UpdateQueryBuilder.Selection("<", fieldName, value, type));
+        cases.add(new Case("<", fieldName, value, type));
         return this;
     }
 
     public UpdateQueryBuilder whereGreater(String fieldName, Object value, Class type) {
-        selections.add(new UpdateQueryBuilder.Selection(">", fieldName, value, type));
+        cases.add(new Case(">", fieldName, value, type));
         return this;
     }
 
     public UpdateQueryBuilder whereLessOrEqual(String fieldName, Object value, Class type) {
-        selections.add(new UpdateQueryBuilder.Selection("<=", fieldName, value, type));
+        cases.add(new Case("<=", fieldName, value, type));
         return this;
     }
 
     public UpdateQueryBuilder whereGreaterOrEqual(String fieldName, Object value, Class type) {
-        selections.add(new UpdateQueryBuilder.Selection(">=", fieldName, value, type));
+        cases.add(new Case(">=", fieldName, value, type));
         return this;
     }
 
@@ -118,29 +114,29 @@ public class UpdateQueryBuilder extends QueryBuilder {
         }
 
         sb.append(" WHERE ");
-        sb.append(selections.get(0).fieldName);
-        sb.append(selections.get(0).comparisonSign);
-        if(selections.get(0).type.equals(String.class)){
+        sb.append(cases.get(0).fieldName);
+        sb.append(cases.get(0).comparisonSign);
+        if(cases.get(0).type.equals(String.class)){
             sb.append("'");
-            sb.append(selections.get(0).value);
+            sb.append(cases.get(0).value);
             sb.append("'");
         }
         else {
-            sb.append(selections.get(0).value);
+            sb.append(cases.get(0).value);
         }
 
-        for (int index = 1; index < selections.size(); index++) {
+        for (int index = 1; index < cases.size(); index++) {
             sb.append(" AND ");
-            sb.append(selections.get(index).fieldName);
-            sb.append(selections.get(index).comparisonSign);
+            sb.append(cases.get(index).fieldName);
+            sb.append(cases.get(index).comparisonSign);
 
-            if(selections.get(index).type.equals(String.class)) {
+            if(cases.get(index).type.equals(String.class)) {
                 sb.append("'");
-                sb.append(selections.get(index).value);
+                sb.append(cases.get(index).value);
                 sb.append("'");
             }
             else {
-                sb.append(selections.get(index).value);
+                sb.append(cases.get(index).value);
             }
         }
 

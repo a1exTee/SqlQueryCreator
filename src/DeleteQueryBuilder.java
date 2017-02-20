@@ -7,8 +7,8 @@ import java.util.List;
  */
 public class DeleteQueryBuilder extends QueryBuilder {
     private class Selection {
-        String comparisonSign;
         String fieldName;
+        String comparisonSign;
         Object value;
         Type type;
 
@@ -66,7 +66,6 @@ public class DeleteQueryBuilder extends QueryBuilder {
     public Query build() {
         sb.append("DELETE FROM ");
         sb.append(tableName);
-
         sb.append(" WHERE ");
         sb.append(selections.get(0).fieldName);
         sb.append(selections.get(0).comparisonSign);

@@ -14,7 +14,9 @@ iq.build()
 вернёт
 
 INSERT INTO SOME_TABLE(F_ALPHA, F_BETA, F_GAMMA, F_DELTA) VALUES ('a_value', false, 10, 0.01)
-UPDATE SOME_TABLE SET F_ALPHA='a_value', F_BETA=false, F_GAMMA=10, F_DELTA=0.01 WHERE F_ALPHA = 'green_elephant', F_DELTA <= 0.05 AND F_BETA = true*/
+UPDATE SOME_TABLE SET F_ALPHA='a_value', F_BETA=false, F_GAMMA=10, F_DELTA=0.01 WHERE F_ALPHA = 'green_elephant', F_DELTA <= 0.05 AND F_BETA = true
+SELECT F_ALPHA, F_BETA, F_GAMMA, F_DELTA FROM SOME_TABLE WHERE F_ALPHA = 'green_elephant' AND F_DELTA => 0.05 AND F_BETA = true AND F_GAMMA > 10
+*/
 
 
 import java.math.BigDecimal;
@@ -61,16 +63,16 @@ public class App {
         Query updateQuery = updateQueryBuilder.build();
         System.out.println(updateQuery.getSql());
 
-        /*SelectQueryBuilder selectQueryBuilder =
+        SelectQueryBuilder selectQueryBuilder =
                 new SelectQueryBuilder()
-                        .select("SELECT")
+                        .select("F_alpha", "F_BETA", "F_GAMMA", "F_DELTA")
                         .from("Some_Table")
-                        .whereEqual("F_alpha", "a_value", String.class)
-                        .whereEqual("F_Beta", false, Boolean.class)
-                        .whereEqual("F_gamma", BigDecimal.TEN, BigDecimal.class)
-                        .whereEqual("F_Delta", 0.01, Double.class);
+                        .whereEqual("F_alpha", "green_elephant", String.class)
+                        .whereGreaterOrEqual("F_DELTA", 0.05, Double.class)
+                        .whereEqual("F_BETA", true, Boolean.class)
+                        .whereGreater("F_GAMMA", BigDecimal.TEN, BigDecimal.class);
 
         Query selectQuery = selectQueryBuilder.build();
-        System.out.println(selectQuery.getSql());*/
+        System.out.println(selectQuery.getSql());
     }
 }
